@@ -1,0 +1,40 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima">
+
+    <div class="topbar clearfix" style="
+        background-color:white">
+        <div class="topbar-left"
+             style="background-color:white;
+             padding:0px;"
+            >            
+            <p:graphicImage  name="images/lg.fw.png" 
+                             library="ultima-layout"
+                             style="height:70px;"
+                             />
+        </div>
+       
+        
+        <div class="topbar-right">
+            <a id="menu-button" href="#">
+                <i style="color:#039BE5; background-color:#ffffff" class="fa fa-list"></i> 
+            </a>
+            <h:outputText value="School Management And Control System" style="color:#039BE5; font-size:20px; font-weight: bold;
+                           margin-top:30px; padding:0px;"/>
+            <a id="topbar-menu-button" href="#">
+                <i class="material-icons" style="color:#039BE5;">&#xE5D4;</i>
+            </a>
+            
+            <a href="#" class="rightpanel-btn">
+                <i class="material-icons" style="color:#039BE5;">&#xE5D2;</i>
+            </a>
+            
+            
+        </div>
+    </div>
+
+</ui:composition>

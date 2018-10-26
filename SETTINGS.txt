@@ -1,0 +1,57 @@
+configuration for bolatofe
+Install the service named 'Tomcat8'
+C:\> service.bat install
+
+Remove the service named 'Tomcat8'
+C:\> tomcat8 //DS//Tomcat8
+backup database 
+mysqldump -u [username] -p [dbname] > filename.sql
+
+RESTORE
+mysql -u [username] -p [dbname] < filename.sql
+
+APPLICATION VIEWS
+MASTER VIEW
+CREATE  VIEW `masterorder` AS SELECT `o`.`id` AS `id`,`o`.`invoice` AS `invoice`,`o`.`description` AS `description`,`o`.`orderdate` 
+AS `orderdate`,`o`.`deliverydate` AS `deliverydate`,`o`.`purchasedprice` AS `purchasedprice`,(`o`.`purchasedprice` * `o`.`quantity`) 
+AS `purchasedcost`,(`o`.`Amount` - (`o`.`purchasedprice` * `o`.`quantity`)) AS `Profits`,`o`.`unitprice` AS `unitprice`,`o`.`quantity` 
+AS `quantity`,`o`.`Amount` AS `cost`,`o`.`amountpaid` AS `amountpaid`,`o`.`balance` AS `balance`,`o`.`vat` AS `vat`,`o`.`paymenttype` 
+AS `paymenttype`,`em`.`name` AS `SoldBy`,`em`.`phone` AS `employeephone`,`em`.`id` AS `employeeid`,`o`.`customername` AS `Customername` 
+FROM (`orders` `o` JOIN `employee` `em` ON((`o`.`staff` = `em`.`id`))) ORDER BY CAST(`o`.`deliverydate` AS DATE) DESC;
+
+DETAILSORDERVIEW
+CREATE  VIEW `detailsorder` AS SELECT `m`.`id` AS `id`,`m`.`invoice` AS `invoiceno`,`m`.`description` 
+AS `description`,`m`.`orderdate` AS `orderdate`,`m`.`deliverydate` AS `deliverydate`,`m`.`purchasedprice` 
+AS `purchasedprice`,`m`.`purchasedcost` AS `purchasedcost`,`m`.`Profits` AS `Profits`,`m`.`unitprice` 
+AS `unitprice`,`m`.`quantity` AS `quantity`,`m`.`amountpaid` AS `amountpaid`,`m`.`SoldBy` AS `soldby`,`m`.`employeephone`
+ AS `soldbyphone`,`m`.`employeeid` AS `soldbyid`,`m`.`Customername` 
+ AS `Customername`,(CASE WHEN (`m`.`balance` > 0) THEN (`m`.`cost` - (`m`.`amountpaid` + `r`.`paid`)) ELSE `m`.`balance` END) AS `balance`,`m`.`cost`
+ AS `cost`,`m`.`paymenttype` AS `paymenttype`,`m`.`vat` AS `vat` FROM (`masterorder` `m` LEFT JOIN `refundsview` `r` ON((`m`.`invoice` = `r`.`invoiceno`)));
+
+REFUND 
+CREATE  VIEW `refundsview` AS SELECT MAX(`refunds`.`id`) AS `max(id)`,`refunds`.`invoiceno`
+AS `invoiceno`,SUM(`refunds`.`amountpaid`) AS `paid` FROM `refunds` GROUP BY `refunds`.`invoiceno`;
+
+productfrequency
+
+CREATE  VIEW `productfrequencyview` AS SELECT `detailsorder`.`id` AS `id`,`detailsorder`.`description` 
+AS `description`,COUNT(0) AS `frequency`,SUM(`detailsorder`.`cost`) AS `amount`,SUM(`detailsorder`.`Profits`) 
+AS `profits` FROM `detailsorder` GROUP BY `detailsorder`.`description` ORDER BY `frequency` DESC;
+
+
+
+CREATE  VIEW `yearlytransaction` AS (SELECT `detailsorder`.`id` AS `id`,SUM(`detailsorder`.`cost`) AS `cost`,SUM(`detailsorder`.`Profits`)
+ AS `profits`,YEAR(`detailsorder`.`orderdate`) AS `tryears` FROM `detailsorder` GROUP BY YEAR(`detailsorder`.`orderdate`));
+ 
+ 
+ CREATE  VIEW `barchatyearlyreport` AS SELECT `detailsorder`.`id` AS `id`,YEAR(`detailsorder`.`orderdate`) 
+ AS `years`,MONTH(`detailsorder`.`orderdate`) AS `months`,SUM(`detailsorder`.`Profits`) AS `profits`,SUM(`detailsorder`.`cost`) 
+ AS `cost`,SUM(`detailsorder`.`quantity`) 
+ AS `quantity` FROM `detailsorder` GROUP BY YEAR(`detailsorder`.`orderdate`),MONTH(`detailsorder`.`orderdate`);
+ 
+ CREATE  VIEW `balanceview` 
+AS (SELECT `detailsorder`.`id` AS `id`,SUM(`detailsorder`.`cost`) AS `cost`,SUM(`detailsorder`.`Profits`) 
+AS `profits`,YEAR(`detailsorder`.`orderdate`) AS `tryears` FROM `detailsorder` GROUP BY YEAR(`detailsorder`.`orderdate`));
+
+ CREATE VIEW instock AS SELECT r.id AS id, r.total AS stocks, (SELECT SUM(o.vat)  FROM detailsorder o WHERE o.vat IS NOT NULL) purchases, (r.total-(SELECT SUM(o.vat)  
+ FROM detailsorder o WHERE o.vat IS NOT NULL)) balance FROM repos r;

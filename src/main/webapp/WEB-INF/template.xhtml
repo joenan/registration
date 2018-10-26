@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+    <title>Registration</title>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <meta name="theme-color" content="#{guestPreferences.themeColors[guestPreferences.theme]}" />
+        </f:facet>
+        <ui:insert name="title">
+
+        </ui:insert>
+        <h:outputScript name="js/nanoscroller.js" library="ultima-layout" />
+        <h:outputScript name="js/layout.js" library="ultima-layout" />
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="js/swipe.js" library="ultima-layout" />
+        <ui:insert name="head">
+
+        </ui:insert>
+        <style>
+            label {
+                color: #757575;
+                font-size: 1rem;
+                cursor: text;
+                ::after, ::before {
+                    box-sizing: inherit;
+                }
+                input[type="date"] + label::after, input[type="datetime-local"] + label::after, input[type="email"] + label::after, input[type="number"] + label::after, input[type="password"] + label::after, input[type="search-md"] + label::after, input[type="search"] + label::after, input[type="tel"] + label::after, input[type="text"] + label::after, input[type="time"] + label::after, input[type="url"] + label::after, textarea.md-textarea + label::after {
+                    display: block;
+                    content: "";
+                    position: absolute;
+                    top: 65px;
+                    opacity: 0;
+                    -webkit-transition: .2s opacity ease-out,.2s color ease-out;
+                    transition: .2s opacity ease-out,.2s color ease-out;
+                }
+            }
+            ::-webkit-scrollbar {
+                width: 8px;
+                background: #FAFAFA;
+            }
+
+            /* Track */
+            ::-webkit-scrollbar-track {
+                background: white;
+            }
+
+            /* Handle */
+            ::-webkit-scrollbar-thumb {
+                background: #E0E0E0;
+                border-radius: 8px;
+            }
+
+            /* Handle on hover */
+            ::-webkit-scrollbar-thumb:hover {
+                background: #BDBDBD;
+            }
+            body .ui-inputfield {
+                background: white no-repeat;
+                background-image: linear-gradient(to bottom, #039BE5, #039BE5), linear-gradient(to bottom, #bdbdbd, #bdbdbd);
+                background-size: 0 2px, 100% 1px;
+                background-position: 50% 100%, 50% 100%;
+                transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+                border-width: 0;
+                padding: 2px 2px 2px 2px;
+                font-size: 16px;
+                -moz-border-radius: 0px;
+                -webkit-border-radius: 0px;
+                border-radius: 0px;
+            } 
+            body .ui-chkbox .ui-chkbox-box.ui-state-active {
+                border-color: #039BE5;
+                background-color: #039BE5;
+            }
+            body .ui-selectonemenu {
+                border-width: 0;
+                background: white no-repeat;
+                background-image: linear-gradient(to bottom, #039BE5, #039BE5), linear-gradient(to bottom, #bdbdbd, #bdbdbd);
+                background-size: 0 2px, 100% 1px;
+                background-position: 50% 100%, 50% 100%;
+                transition: background-size 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+                padding-bottom: 2px;
+                box-sizing: border-box;
+                -moz-border-radius: 0;
+                -webkit-border-radius: 0;
+                border-radius: 0;
+            }
+            body .ui-dialog .ui-dialog-titlebar {
+    background-color: #ffffff;
+    color: #039BE5;
+    padding: 10px 16px;
+    
+}
+.layout-wrapper .ultima-menu li a {
+    font-size: 16px;
+    display: block;
+    padding: 10px 16px;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+    -moz-transition: background-color 0.3s;
+    -o-transition: background-color 0.3s;
+    -webkit-transition: background-color 0.3s;
+    transition: background-color 0.3s;
+    overflow: hidden;
+}
+body.layout-compact .layout-wrapper .ultima-menu li a {
+    font-size: 12px;
+    padding: 8px 16px;
+}
+        </style>
+    </h:head>
+
+    <h:body style="overflow:hidden !important;"
+            styleClass="main-body #{guestPreferences.compact ? 'layout-compact' : null}">
+
+        <div class="layout-wrapper #{guestPreferences.menuLayout} #{guestPreferences.orientationRTL ? 'layout-rtl' : null}">
+            <ui:include src="./topbar.xhtml" />
+            <ui:include src="./rightpanel.xhtml" />
+            <ui:include src="./menu.xhtml" />
+
+            <div class="layout-main">
+                <ui:insert name="content"/>
+
+            </div>
+        </div>
+
+        <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+            <f:facet name="start">
+                <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="Done" />
+            </f:facet>
+        </p:ajaxStatus>
+
+
+        <h:outputStylesheet name="css/nanoscroller.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/animate.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/custom.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
+    </h:body>
+
+</html>

@@ -1,0 +1,75 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima">
+
+    <h:form id="menuform"> 
+        <div class="layout-menu #{guestPreferences.menuClass}">
+            <div class="nano">
+                <div class="nano-content menu-scroll-content" style="background-color:#039BE5; color:white;">
+                    <ui:fragment rendered="#{guestPreferences.profileMode == 'inline' and guestPreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
+                        <div class="profile">
+                            <div class="profile-imag">
+                                <p:graphicImage name="./images/default.png"
+                                                library="ultima-layout"  style="width:70px; height:70px;"/>
+                            </div>
+                            <a id="profile-options" href="#">
+                                <span class="profile-name" style="color:white">#{admin.username}</span>
+                                <i class="material-icons" style="color:white;">&#xE313;</i>
+                            </a>
+                        </div>
+
+                        <ul id="profile-menu" class="ultima-menu">
+                            <li role="menuitem">
+                                <a href="#" class="ripplelink" onclick="PF('password').show()">
+                                    <i class="material-icons" style="color:white;">&#xE32A;</i>
+                                    <span style="color:white;">Change Password</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="ripplelink" onclick="PF('settings').show()">
+                                    <i class="material-icons" style="color:white;">&#xE8B9;</i>
+                                    <span style="color:white;">Settings</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="ripplelink" 
+                                   >
+                                    <i class="fa fa-database" style="color:white;"></i>
+                                    <span style="color:white;">Backup Database</span>
+                                   
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="ripplelink" onclick="PF('restore').show()">
+                                    <i class="fa fa-window-restore" style="color:white;"></i>
+                                    <span style="color:white;">Restore Backup</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="ripplelink">
+                                    <i class="material-icons" style="color:white;">&#xE8AC;</i>
+                                    <span style="color:white;">Logout</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </ui:fragment>
+
+                    <pu:menu widgetVar="me">
+                        <p:menuitem  value="Registration" icon="fa fa-tasks"  style="color:white"
+                                     iconPos="right" url="registration.html"/>
+                        <p:menuitem  value="Student" icon="fa fa-user-circle"  style="color:white" url="student.html" iconPos="right"/>
+                        <p:menuitem  value="Course" icon="fa fa-houzz"  style="color:white " url="course.html" iconPos="right"/>
+                       
+
+                    </pu:menu>
+                    <ui:include src="footer.xhtml"/>
+                    
+                </div>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>
